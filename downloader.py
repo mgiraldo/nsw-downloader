@@ -48,4 +48,4 @@ pool = multiprocessing.Pool(multiprocessing.cpu_count())
 for result in tqdm.tqdm(pool.imap(download_file, file_set), total=count):
     pass
 
-exit(0)
+pool.close()
