@@ -6,6 +6,7 @@ import os
 import tqdm
 import pandas as pd
 import argparse
+from urllib.error import HTTPError
 
 parser = argparse.ArgumentParser()
 
@@ -28,6 +29,8 @@ else:
 
 file_set = url_df.file_key[:count]
 
+skipped = []
+
 def url_for_file_key(file_key):
   file_key = file_key.replace("\"","")
   url = "https://files.sl.nsw.gov.au/fotoweb/thumbnails/150_150/%s" % file_key
@@ -40,8 +43,16 @@ def download_file(file_key):
   file_name = "%s/%s" % (files_path, file_key)
   Path(file_path).mkdir(exist_ok=True, parents=True)
   if (Path(file_name).exists() == False):
-    urllib.request.urlretrieve(url, file_name)
+    try:
+      urllib.request.urlretrieve(url, file_name)
+    except HTTPError as err:
+      skipped.append(file_key)
+      pass
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
   for result in tqdm.tqdm(executor.map(download_file, file_set), total=count):
     pass
+
+if (len(skipped) > 0):
+  print("\nSkipped %s files:" % len(skipped))
+  print("%s" % skipped)
