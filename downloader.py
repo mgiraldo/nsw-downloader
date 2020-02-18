@@ -6,6 +6,7 @@ import os
 import tqdm
 import pandas as pd
 import argparse
+from sys import exit
 
 parser = argparse.ArgumentParser()
 
@@ -46,3 +47,5 @@ pool = multiprocessing.Pool(multiprocessing.cpu_count())
 
 for result in tqdm.tqdm(pool.imap(download_file, file_set), total=count):
     pass
+
+exit(0)
