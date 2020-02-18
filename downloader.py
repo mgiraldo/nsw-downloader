@@ -43,6 +43,6 @@ def download_file(file_key):
     if (Path(file_name).exists() == False):
         urllib.request.urlretrieve(url, file_name)
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+with concurrent.futures.ThreadPoolExecutor() as executor:
     for result in tqdm.tqdm(executor.map(download_file, file_set), total=count):
         pass
