@@ -1,4 +1,4 @@
-from multiprocessing import Pool
+import concurrent.futures
 import multiprocessing
 import urllib.request
 from pathlib import Path
@@ -43,9 +43,6 @@ def download_file(file_key):
     if (Path(file_name).exists() == False):
         urllib.request.urlretrieve(url, file_name)
 
-pool = multiprocessing.Pool(multiprocessing.cpu_count())
-
-for result in tqdm.tqdm(pool.imap(download_file, file_set), total=count):
-    pass
-
-pool.close()
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    for result in tqdm.tqdm(executor.map(download_file, file_set), total=count):
+        pass
