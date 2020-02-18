@@ -6,7 +6,6 @@ import os
 import tqdm
 import pandas as pd
 import argparse
-from sys import exit
 
 parser = argparse.ArgumentParser()
 
@@ -30,19 +29,19 @@ else:
 file_set = url_df.file_key[:count]
 
 def url_for_file_key(file_key):
-    file_key = file_key.replace("\"","")
-    url = "https://files.sl.nsw.gov.au/fotoweb/thumbnails/150_150/%s" % file_key
-    return url
+  file_key = file_key.replace("\"","")
+  url = "https://files.sl.nsw.gov.au/fotoweb/thumbnails/150_150/%s" % file_key
+  return url
 
 def download_file(file_key):
-    file_key = file_key.replace("\"","")
-    url = url_for_file_key(file_key)
-    file_path = "%s/%s" % (files_path, file_key[:file_key.find("/")])
-    file_name = "%s/%s" % (files_path, file_key)
-    Path(file_path).mkdir(exist_ok=True, parents=True)
-    if (Path(file_name).exists() == False):
-        urllib.request.urlretrieve(url, file_name)
+  file_key = file_key.replace("\"","")
+  url = url_for_file_key(file_key)
+  file_path = "%s/%s" % (files_path, file_key[:file_key.find("/")])
+  file_name = "%s/%s" % (files_path, file_key)
+  Path(file_path).mkdir(exist_ok=True, parents=True)
+  if (Path(file_name).exists() == False):
+    urllib.request.urlretrieve(url, file_name)
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    for result in tqdm.tqdm(executor.map(download_file, file_set), total=count):
-        pass
+  for result in tqdm.tqdm(executor.map(download_file, file_set), total=count):
+    pass
