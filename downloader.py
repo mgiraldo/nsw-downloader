@@ -52,6 +52,7 @@ def download_file(file_key):
 with multiprocessing.Pool() as pool:
   for i in tqdm.tqdm(pool.imap_unordered(download_file, file_set), total=count):
     pass
+  pool.close()
 
 if (len(skipped) > 0):
   print("\nSkipped %s files:" % len(skipped))
