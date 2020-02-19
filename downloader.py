@@ -49,9 +49,9 @@ def download_file(file_key):
       skipped.append(file_key)
       pass
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
-  for i in tqdm.tqdm(range(count), total=count):
-    executor.submit(download_file, file_set[i])
+with multiprocessing.Pool() as pool:
+  for i in tqdm.tqdm(pool.imap_unordered(download_file, file_set), total=count):
+    pass
 
 if (len(skipped) > 0):
   print("\nSkipped %s files:" % len(skipped))
