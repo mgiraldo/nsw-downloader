@@ -50,8 +50,8 @@ def download_file(file_key):
       pass
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-  for result in tqdm.tqdm(executor.map(download_file, file_set), total=count):
-    pass
+  for i in tqdm.tqdm(range(count), total=count):
+    executor.submit(download_file, file_set[i])
 
 if (len(skipped) > 0):
   print("\nSkipped %s files:" % len(skipped))
