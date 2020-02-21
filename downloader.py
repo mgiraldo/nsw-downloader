@@ -33,7 +33,7 @@ skipped = []
 
 def url_for_file_key(file_key):
   file_key = file_key.replace("\"","")
-  url = "https://files.sl.nsw.gov.au/fotoweb/thumbnails/150_150/%s" % file_key
+  url = "https://files02.sl.nsw.gov.au/fotoweb/thumbnails/150_150/%s" % file_key
   return url
 
 def download_file(file_key):
