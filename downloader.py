@@ -16,16 +16,16 @@ parser.add_argument('--all', action='store_const', const=True, help='download al
 args = parser.parse_args()
 
 base_path = os.path.dirname(os.path.realpath(__file__))
-
+base_url = "https://files02.sl.nsw.gov.au/fotoweb/thumbnails/150_150"
 files_path = "%s/files" % base_path
 url_df = pd.read_csv("files-urls.csv")
 
 if (args.all):
   count = len(url_df.file_key)
-  print("Downloading all %s files" % count)
+  print("Downloading all %s files from %s" % (count, base_url))
 else:
   count = args.count
-  print("Downloading %s files" % count)
+  print("Downloading %s files from %s" % (count, base_url))
 
 file_set = url_df.file_key[:count]
 
@@ -33,7 +33,7 @@ skipped = []
 
 def url_for_file_key(file_key):
   file_key = file_key.replace("\"","")
-  url = "https://files02.sl.nsw.gov.au/fotoweb/thumbnails/150_150/%s" % file_key
+  url = "%s/%s" % (base_url, file_key)
   return url
 
 def download_file(file_key):
