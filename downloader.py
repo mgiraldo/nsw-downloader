@@ -45,7 +45,7 @@ def download_file(file_key):
   if (Path(file_name).exists() == False):
     try:
       urllib.request.urlretrieve(url, file_name)
-    except HTTPError as err:
+    except:
       skipped.append(file_key)
       pass
 
