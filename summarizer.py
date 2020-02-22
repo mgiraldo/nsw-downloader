@@ -31,7 +31,7 @@ def summarize_file():
         try:
             urllib.request.urlretrieve(url, filename)
         except:
-            print("Could not retrieve: % " % url)
+            print("Could not retrieve: %s " % url)
     else:
         print("File exists: %s" % filename)
 
