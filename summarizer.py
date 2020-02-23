@@ -26,16 +26,20 @@ def summarize_file():
     else:
       image_url = image
     url = "%s/?url=%s" % (summarizer_server, image_url)
-    print(url)
     if (Path(filename).exists() == False):
         try:
+            print(url)
             urllib.request.urlretrieve(url, filename)
+            return True
         except:
             print("Could not retrieve: %s " % url)
+            return False
     else:
         print("File exists: %s" % filename)
+        return False
 
 if __name__ == '__main__':
     starttime = time.time()
-    summarize_file()
-    print('Processed in {} seconds'.format(time.time() - starttime))
+    processed = summarize_file()
+    if (processed):
+      print('Processed in {} seconds'.format(time.time() - starttime))
