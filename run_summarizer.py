@@ -44,12 +44,18 @@ url_df = pd.read_csv("../data/files-urls.csv", index_col='access_pid')
 
 count = len(url_df.file_key)
 
+skipped = []
+
 print("Summarizing %s files with %s processes" % (count, (multiprocessing.cpu_count() if cpu == None else cpu)))
 
 def summarize_row(access_pid, row):
-  file_key = row['file_key'].replace("\"","")
-  access_pid = access_pid.replace("\"","")
-  subprocess.run(["python", "summarizer.py", "-w", file_key, "%s/%s.json" % (file_path, access_pid)])
+  try:
+    file_key = row['file_key'].replace("\"","")
+    access_pid = access_pid.replace("\"","")
+    subprocess.run(["python", "summarizer.py", "-w", file_key, "%s/%s.json" % (file_path, access_pid)])
+  except:
+    skipped.append(row)
+    pass
 
 with multiprocessing.Pool(processes=cpu) as pool:
   for access_pid, row in tqdm.tqdm(url_df.iterrows(), total=count):
@@ -58,3 +64,7 @@ with multiprocessing.Pool(processes=cpu) as pool:
   pool.join()
 
 print('Processed %s files in {} seconds'.format(time.time() - starttime) % count)
+
+if (len(skipped) > 0):
+  print("Skipped %s files:", len(skipped))
+  print(skipped)
