@@ -52,7 +52,9 @@ def summarize_row(access_pid, row):
   try:
     file_key = row['file_key'].replace("\"","")
     access_pid = access_pid.replace("\"","")
-    subprocess.run(["python", "summarizer.py", "-w", file_key, "%s/%s.json" % (file_path, access_pid)])
+    filename = "%s/%s.json" % (file_path, access_pid)
+    if (Path(filename).exists() == False):
+      subprocess.run(["python", "summarizer.py", "-w", file_key, filename])
   except:
     skipped.append(row)
     pass
